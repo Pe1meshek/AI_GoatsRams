@@ -3,7 +3,7 @@ public class Kit {
     private int sumGR;
     private boolean beTested;
 
-    public Kit(){}
+    public Kit(){ this.arrNum = new int[0]; }
 
     public Kit(int[] arrNum) {
         this.arrNum = arrNum;
@@ -13,13 +13,11 @@ public class Kit {
 //    public void setArrNum(int[] arrNum) {
 //        this.arrNum = arrNum;
 //    }
-
     public Kit copy(){
         Kit copy = new Kit();
         copy.arrNum = new int[arrNum.length];
-        for(int i=0;i<arrNum.length;i++){
+        for(int i=0;i<arrNum.length;i++)
             copy.arrNum[i] = arrNum[i];
-        }
         copy.sumGR = sumGR;
         copy.beTested = beTested;
         return copy;
@@ -27,9 +25,8 @@ public class Kit {
 
     public int[] getCopyArr(){
         int[] copy = new int[arrNum.length];
-        for(int i=0;i<arrNum.length;i++){
+        for(int i=0;i<arrNum.length;i++)
             copy[i] = arrNum[i];
-        }
         return copy;
     }
 
@@ -50,9 +47,8 @@ public class Kit {
     @Override
     public String toString() {
         String res = "";
-        for (int e : arrNum) {
+        for (int e : arrNum)
             res += e;
-        }
         return res;
     }
 
@@ -62,26 +58,36 @@ public class Kit {
         return res;
     }
 
-    public int[] getArrNum() {
-        return arrNum;
+    public static Kit sumKit(Kit k1, Kit k2){
+        int[] arr = new int[k1.getArrNumSize()+ k2.getArrNumSize()];
+        int ind = 0;
+        for(int el : k1.getCopyArr()){
+            arr[ind] = el;
+            ind++;
+        }
+        for(int el : k2.getCopyArr()){
+            arr[ind] = el;
+            ind++;
+        }
+        Kit res = new Kit(arr);
+        res.setBeTested(k1.isBeTested() && k2.isBeTested());
+        res.setSumGR(k1.getSumGR() + k2.getSumGR());
+        return res;
     }
 
-    public void setSumGR(int sumGR) {
-        this.sumGR = sumGR;
-    }
 
-    public int getSumGR() {
-        return sumGR;
-    }
 
-    public void setBeTested(boolean beTested) {
-        this.beTested = beTested;
-    }
+    // SET-GET
+    public int[] getArrNum() {return arrNum;}
 
-    public boolean isBeTested() {
-        return beTested;
-    }
-    
+    public void setSumGR(int sumGR) { if(!beTested) this.sumGR = sumGR;}
+
+    public int getSumGR() {return sumGR;}
+
+    public void setBeTested(boolean beTested) {this.beTested = beTested;}
+
+    public boolean isBeTested() {return beTested;}
+
     public int getArrNumSize(){
         return arrNum.length;
     }
