@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ac0eb158-24bb-40ee-8e90-9b416b74b1c6" name="Changes" comment="First step (random kits)">
+    <list default="true" id="ac0eb158-24bb-40ee-8e90-9b416b74b1c6" name="Changes" comment="Can guess numbers, but not the order of numbers">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Kit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Kit.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -67,7 +66,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659922412713</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Can guess numbers, but not the order of numbers">
+      <created>1660086638576</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1660086638576</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -75,7 +81,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
@@ -83,6 +101,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="First step (random kits)" />
-    <option name="LAST_COMMIT_MESSAGE" value="First step (random kits)" />
+    <MESSAGE value="Can guess numbers, but not the order of numbers" />
+    <option name="LAST_COMMIT_MESSAGE" value="Can guess numbers, but not the order of numbers" />
   </component>
 </project>

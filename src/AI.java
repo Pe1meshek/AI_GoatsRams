@@ -152,28 +152,33 @@ public class AI {
         return base;
     }
 
+    public void analyzerForNew(Kit newK){
+        for (Kit secEl : newKit)
+            for (Kit overall : oldKit)
+                if (!secEl.isBeTested() && overall.isBelong( Kit.sumKit(newK,secEl) )) {
+                    secEl.setSumGR(overall.getSumGR() - newK.getSumGR());
+                    secEl.setBeTested(true);
+                }
+    }
+
     public void analyzer(Kit baseKit, Kit defaultKit){
         if(baseKit.isBeTested()) {
             for (Kit k : newKit)
-                if (k.isBelong(tryKit.get(tryKit.size() - 1)) && !k.isBelong(baseKit)) {
+                if (tryKit.get(tryKit.size() - 1).isBelong( Kit.sumKit(k, Kit.sumKit(baseKit,defaultKit)) ) && !k.isBelong(baseKit)) {
+
                     k.setSumGR(tryKit.get(tryKit.size() - 1).getSumGR() - baseKit.getSumGR() - defaultKit.getSumGR());
                     k.setBeTested(true);
 
-                    for (Kit secEl : newKit)
-                        for (Kit overall : oldKit)
-                            if (!secEl.isBeTested() && overall.isBelong( Kit.sumKit(k,secEl) )) {
-                                secEl.setSumGR(overall.getSumGR() - k.getSumGR());
-                                secEl.setBeTested(true);
-                            }
+                    analyzerForNew(k);
                     return;
                 }
         }
         else{
-            if(oldKit.get(oldKit.size()-1).getSumGR() - defaultKit.getSumGR() == 0 ||
-                oldKit.get(oldKit.size()-1).getSumGR() - defaultKit.getSumGR() == KOL_ELEM_IN_WORD-defaultKit.getArrNumSize()){
+            if(tryKit.get(tryKit.size()-1).getSumGR() - defaultKit.getSumGR() == 0 ||
+                tryKit.get(tryKit.size()-1).getSumGR() - defaultKit.getSumGR() == KOL_ELEM_IN_WORD-defaultKit.getArrNumSize()){
                 for(Kit thatK : newKit)
-                    if( Kit.sumKit( thatK, Kit.sumKit(baseKit, defaultKit) ).isBelong(oldKit.get(oldKit.size()-1)) ){
-                        if(oldKit.get(oldKit.size()-1).getSumGR() - defaultKit.getSumGR() == 0){
+                    if( tryKit.get(tryKit.size()-1).isBelong( Kit.sumKit( thatK, Kit.sumKit(baseKit, defaultKit) ) ) ){
+                        if(tryKit.get(tryKit.size()-1).getSumGR() - defaultKit.getSumGR() == 0){
                             baseKit.setSumGR(0);
                             thatK.setSumGR(0);
                         }
@@ -183,14 +188,9 @@ public class AI {
                         }
                         baseKit.setBeTested(true);
                         thatK.setBeTested(true);
-                        for( Kit newK : newKit )
-                            if( !newK.isBeTested() )
-                                for( Kit oldK : oldKit )
-                                    if( oldK.isBelong( Kit.sumKit(baseKit, newK) ) ||
-                                        oldK.isBelong( Kit.sumKit(thatK, newK) ) ){
-                                        newK.setSumGR(oldK.getSumGR()-baseKit.getSumGR());
-                                        newK.setBeTested(true);
-                                    }
+
+                        analyzerForNew(baseKit);
+                        analyzerForNew(thatK);
                     }
                 return;
             }
@@ -203,21 +203,23 @@ public class AI {
                 for(Kit withOutBase : oldKit)
                     for(Kit WOB1 : newKit)
                         for(Kit WOB2 : newKit)
-                            if( tryKit.get(tryKit.size()-1).isBelong( Kit.sumKit( WOB1, Kit.sumKit(baseKit,defaultKit) ) ) &&
-                                tryKit.get(tryKit.size()-2).isBelong( Kit.sumKit( WOB2, Kit.sumKit(baseKit,defaultKit) ) ) &&
-                                withOutBase.isBelong( Kit.sumKit(WOB1,WOB2) )){
+                            if( withOutBase.isBelong( Kit.sumKit(WOB1,WOB2) ) &&
+                                tryKit.get(tryKit.size()-1).isBelong( Kit.sumKit( WOB1, Kit.sumKit(baseKit,defaultKit) ) ) &&
+                                tryKit.get(tryKit.size()-2).isBelong( Kit.sumKit( WOB2, Kit.sumKit(baseKit,defaultKit) ) ) ){
 
                                 baseKit.setSumGR( ( tryKit.get(tryKit.size()-1).getSumGR() - defaultKit.getSumGR() +
                                                     tryKit.get(tryKit.size()-2).getSumGR() - defaultKit.getSumGR() -
                                                     withOutBase.getSumGR() ) / 2 );
                                 baseKit.setBeTested(true);
 
-                                for (Kit secEl : newKit)
-                                    for (Kit overall : oldKit)
-                                        if (!secEl.isBeTested() && overall.isBelong( Kit.sumKit(baseKit,secEl) )) {
-                                            secEl.setSumGR(overall.getSumGR() - baseKit.getSumGR());
-                                            secEl.setBeTested(true);
-                                        }
+                                WOB1.setSumGR( tryKit.get(tryKit.size()-1).getSumGR() - defaultKit.getSumGR() - baseKit.getSumGR() );
+                                WOB2.setSumGR( tryKit.get(tryKit.size()-2).getSumGR() - defaultKit.getSumGR() - baseKit.getSumGR() );
+                                WOB1.setBeTested(true);
+                                WOB2.setBeTested(true);
+
+                                analyzerForNew(baseKit);
+                                analyzerForNew(WOB1);
+                                analyzerForNew(WOB2);
                                 return;
                             }
         }

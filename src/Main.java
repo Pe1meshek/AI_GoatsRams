@@ -48,12 +48,10 @@ public class Main {
 //            return;
 //        }
 
-
+        // Second stage
         while(true){
             ai.removeNewKit();
             ai.reKit();
-
-//            ai.info();
 
             boolean isOver = true;
             for(int i=0; i<ai.getOldKitSize();i++)
@@ -62,35 +60,25 @@ public class Main {
             if(isOver)
                 break;
 
-            secondStage:
-            while (true){
+            while(true){
                 Kit def = ai.genDefaultKit();
                 Kit base = ai.genBaseKit(def);
-
-                Kit newK;
-                while(true){
-                    newK = ai.genNewWord(base,def);
-                    if(newK == null) {
-                        break;
-                    }
-                    System.out.println(newK);
-                    int[] ans = ai.genAnswer();
-                    newK.setSumGR(ans[0]+ans[1]);
-                    newK.setBeTested(true);
-                    ai.addTryKit(newK.copy());
-                    ai.addOldKit(newK.copy());
-                    ai.incrementCounter();
-                    ai.analyzer(base,def);
-
-                    ai.info();
+                Kit newK = ai.genNewWord(base,def);
+                if(newK == null) {
+                    break;
                 }
+                System.out.println(newK);
+                int[] ans = ai.genAnswer();
+                newK.setSumGR(ans[0]+ans[1]);
+                newK.setBeTested(true);
+                ai.addTryKit(newK.copy());
+                ai.addOldKit(newK.copy());
+                ai.incrementCounter();
+                ai.analyzer(base,def);
 
-                for(int i=0; i<ai.getNewKitSize(); i++)
-                    if(!ai.getNewKit(i).isBeTested()) {
-                        continue secondStage;
-                    }
-                break;
+//                ai.info();
             }
+
 
             ai.removeOldKit();
             ai.newInOld();
@@ -98,40 +86,6 @@ public class Main {
 
         ai.removeNewKit();
         ai.reKit();
-
-//        ai.reKit();
-//        if(ai.getOldKit(0).getSumGR() < ai.getKolElemInWord()){
-//            Kit base = null;
-//            for(int i=0; i<ai.getNewKitSize(); i++)
-//                if( ai.getNewKit(i).isBeTested() ){
-//                    base = ai.getNewKit(i);
-//                    break;
-//                }
-//            if(base == null)
-//                base = ai.getNewKit(0);
-//
-//
-//            Kit newK;
-//            while(true){
-//                newK = ai.genNewWord(base,new Kit());
-//                if(newK == null)
-//                    break;
-//                System.out.println(newK);
-//                int[] ans = ai.genAnswer();
-//                newK.setSumGR(ans[0]+ans[1]);
-//                newK.setBeTested(true);
-//                ai.addTryKit(newK.copy());
-//                ai.addOldKit(newK.copy());
-//                ai.incrementCounter();
-//                ai.analyzer(base,new Kit());
-//            }
-//
-//            ai.removeOldKit();
-//            ai.newInOld();
-//            ai.removeNewKit();
-//            ai.reKit();
-//
-//        }
 
         ai.info();
         System.out.println("TRY: "+ai.getCounter());
