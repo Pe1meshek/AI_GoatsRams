@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Kit {
     private int[] arrNum;
     private int sumGR;
@@ -9,10 +12,22 @@ public class Kit {
         this.arrNum = arrNum;
     }
 
+    public boolean isFullEqual(Kit eq){
+        if(arrNum.length != eq.arrNum.length)
+            return false;
+        for (int i=0; i<arrNum.length; i++)
+            if(arrNum[i]!=eq.arrNum[i])
+                return false;
+        return true;
+    }
 
-//    public void setArrNum(int[] arrNum) {
-//        this.arrNum = arrNum;
-//    }
+    public List<Kit> getListKit(){
+        List <Kit> res = new ArrayList<>();
+        for (int i : arrNum)
+            res.add(new Kit( new int[]{i}));
+        return res;
+    }
+
     public Kit copy(){
         Kit copy = new Kit();
         copy.arrNum = new int[arrNum.length];
@@ -59,6 +74,8 @@ public class Kit {
     }
 
     public static Kit sumKit(Kit k1, Kit k2){
+        if(k1 == null || k2 == null)
+            return null;
         int[] arr = new int[k1.getArrNumSize()+ k2.getArrNumSize()];
         int ind = 0;
         for(int el : k1.getCopyArr()){
@@ -91,4 +108,5 @@ public class Kit {
     public int getArrNumSize(){
         return arrNum.length;
     }
+
 }

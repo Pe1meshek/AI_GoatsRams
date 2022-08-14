@@ -3,14 +3,150 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+import static java.lang.Math.abs;
+
 public class AI {
     private static final int KOL_DIFF_ELEM = 10;
     private static final int KOL_ELEM_IN_WORD = 4;
     private int counter = 0;
 
+
     private List<Kit> tryKit = new ArrayList<>();
     private List<Kit> oldKit = new ArrayList<>();
     private List<Kit> newKit = new ArrayList<>();
+    private List<PositionStat> stat = new ArrayList<>();
+
+
+    public void addStat(Kit last, int ram){
+        if(last.getSumGR()==0)
+            return;
+        int[] arr = last.getCopyArr();
+
+        outside:
+        for(int i=0; i<arr.length; i++)
+            if(stat.isEmpty()){
+                stat.add(new PositionStat(arr[i],KOL_ELEM_IN_WORD));
+                stat.get(0).addStat(i,ram);
+            }
+            else{
+                for (PositionStat ps : stat)
+                    if(ps.getNUM()==arr[i]){
+                        ps.addStat(i,ram);
+                        continue outside;
+                    }
+                stat.add(new PositionStat(arr[i],KOL_ELEM_IN_WORD));
+                stat.get(stat.size()-1).addStat(i,ram);
+            }
+    }
+
+    public void updateFromStat(){
+        outside:
+        for(PositionStat ps : stat){
+            for(Integer ips : ps.getCopyArrPos())
+                if(ips == null || ips != 0)
+                    continue outside;
+            ps.setNeed(false);
+        }
+
+        outside:
+        for(PositionStat ps : stat){
+            for( Kit k : oldKit)
+                for( int i : k.getCopyArr())
+                    if(ps.getNUM() == i)
+                        continue outside;
+            ps.setNeed(false);
+        }
+
+        if(!newKit.isEmpty() && newKit.get(0).getArrNumSize()==1)
+            for (Kit newK : newKit)
+                for (PositionStat ps : stat)
+                    if(newK.getCopyArr()[0] == ps.getNUM() && !ps.isNeed())
+                        newK.setBeTested(true);
+    }
+
+//    public void rec(int lvl, List<Kit> lk,Kit res){
+//        if(lvl==0){
+//            System.out.println(res);
+//            return;
+//        }
+//        outside:
+//        for (Kit k : lk){
+//            Kit newRes = Kit.sumKit(res,k);
+//            for(Kit r : res.getListKit())
+//                if(k.isFullEqual(r))
+//                    continue outside;
+//                rec(lvl-1,lk,newRes);
+//        }
+//    }
+
+    public Kit genKitPositionMaxNull(Kit kit,boolean modeThirdStage){
+        int numNull = 0;
+        int count = 0;
+
+        Kit foundMaxNull = gen(KOL_ELEM_IN_WORD, kit.getListKit(), new Kit());
+
+        if(foundMaxNull==null)
+            foundMaxNull = kit;
+
+        while(true){
+            int countNull = 0;
+            kit = gen(KOL_ELEM_IN_WORD, kit.getListKit(), new Kit());
+
+            if(kit==null)
+                break;
+
+            for (int i=0; i<kit.getListKit().size(); i++)
+                for (PositionStat ps : stat)
+                    if(ps.getNUM() == kit.getListKit().get(i).getCopyArr()[0])
+                        if(modeThirdStage){
+                            if(ps.getCopyArrPos()[i]!=null){
+                                countNull+=ps.getCopyArrPos()[i];
+                                break;
+                            }
+                        }
+                        else if(ps.getCopyArrPos()[i]==null){
+                            countNull++;
+                            break;
+                        }
+            tryKit.add(kit.copy());
+            count++;
+            if(countNull>numNull){
+                numNull = countNull;
+                foundMaxNull = kit;
+            }
+        }
+        for(int i=0;i<count;i++)
+            tryKit.remove(tryKit.size()-1);
+        return foundMaxNull;
+    }
+
+    public Kit gen(int lvl, List<Kit> lk,Kit res){
+        if(lvl==0){
+            for(Kit tryK : tryKit)
+                if(res.isFullEqual(tryK))
+                    return null;
+            return res;
+        }
+        outside:
+        for (Kit k : lk){
+            Kit newRes = Kit.sumKit(res,k);
+            for(Kit r : res.getListKit())
+                if(k.isFullEqual(r))
+                    continue outside;
+
+            for (PositionStat ps : stat)
+                if(k.getCopyArr()[0] == ps.getNUM())
+                    if (ps.getStatusPosition(abs(lvl-KOL_ELEM_IN_WORD)) != null &&
+                        ps.getStatusPosition(abs(lvl-KOL_ELEM_IN_WORD)) < 1)
+                        continue outside;
+
+            Kit preRes =  gen(lvl-1,lk,newRes);
+            if(preRes == null)
+                continue outside;
+            return preRes;
+        }
+        return null;
+    }
 
     public int[] genAnswer() {
         int[] res = new int[2];
@@ -237,6 +373,13 @@ public class AI {
         System.out.println("=== NEW KIT ===");
         for(Kit k : newKit)
             System.out.println(k.info());
+    }
+
+    public void statInfo(){
+        for (int i=0; i<KOL_DIFF_ELEM; i++)
+            for( PositionStat ps : stat)
+                if(i == ps.getNUM())
+                    System.out.println(ps);
     }
 
     // SET-GET

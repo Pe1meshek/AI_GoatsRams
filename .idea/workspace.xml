@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ac0eb158-24bb-40ee-8e90-9b416b74b1c6" name="Changes" comment="Can guess numbers, but not the order of numbers">
+    <list default="true" id="ac0eb158-24bb-40ee-8e90-9b416b74b1c6" name="Changes" comment="Can guess numbers, but not the order of numbers (refactoring)">
+      <change afterPath="$PROJECT_DIR$/src/BotPlayer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/PositionStat.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/AI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Kit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Kit.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -73,7 +76,14 @@
       <option name="project" value="LOCAL" />
       <updated>1660086638576</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Can guess numbers, but not the order of numbers (refactoring)">
+      <created>1660234870083</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1660234870083</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -102,6 +112,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="First step (random kits)" />
     <MESSAGE value="Can guess numbers, but not the order of numbers" />
-    <option name="LAST_COMMIT_MESSAGE" value="Can guess numbers, but not the order of numbers" />
+    <MESSAGE value="Can guess numbers, but not the order of numbers (refactoring)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Can guess numbers, but not the order of numbers (refactoring)" />
   </component>
 </project>
