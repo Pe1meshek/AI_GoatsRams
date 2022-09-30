@@ -7,7 +7,7 @@ public class Main {
         System.out.println("any - Player Human");
         System.out.print("mode: ");
 
-        boolean botMode = true;
+        boolean botMode = false;
         int valueLoop = 10000;
 
         Scanner scan = new Scanner(System.in);
@@ -112,12 +112,12 @@ public class Main {
             ai.updateFromStat();
 
 
-//            ai.info();
 //            System.out.println("TRY: "+ai.getCounter());
 //            if(botMode)
 //                System.out.println(BP.getKit());
 //
-//            ai.statInfo();
+            ai.info();
+            ai.statInfo();
 
 
             Kit baseKit = new Kit();
